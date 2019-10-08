@@ -48,6 +48,7 @@ def create_map(shp_file, csv_f):
 
 	return map_canvas
 
+
 # This is the initialized map
 ga_map = create_map(shape_file, csv_file)
 
