@@ -75,7 +75,7 @@ def determine_winner_diff():
                 # Calculate 'Difference in Vote' and Write to Output
                 finished_sheet.cell(row=j,column=6).value = int(finished_sheet.cell(row=j, column=i).value) - int(finished_sheet.cell(row=j, column=(i + 1)).value)
 
-#This function determines percentage of vote for given party,x
+# This function determines percentage of vote for given party,x
 def pctg(x):
     for i in range(2,10):
         if x == "DEM":
@@ -112,6 +112,6 @@ total_votes()
 determine_winner_diff()
 pctg("DEM")
 pctg("REP")
-# ask_for_athens_benchmark("DEM")
+# ask_for_athens_benchmark("DEM") . This is a function I commented out to save time on quick demonstrations
 
 finished_product.save("ENight.xlsx")
