@@ -9,7 +9,6 @@ except:
                  "of file path: ")
     book = load_workbook(path)
 
-
 sheet = book["Election Night Raw Data"]
 
 # Create New Excel File to Write Output to
@@ -35,7 +34,6 @@ finished_sheet['L1'] = "Bench % (R)"
 
 # This function extracts voting data for each candidate, sums the data,
 # and writes it to Output
-
 def print_results(x, y, z):
     sum_votes = 0
 
@@ -49,7 +47,6 @@ def print_results(x, y, z):
 
 # This function calculates the number of votes for both candidates
 # in all Precincts
-
 def total_votes():
     total_votes_both = 0
     for j in range(2,10):
@@ -65,7 +62,6 @@ def total_votes():
 # This function determines the party that won each precinct,
 # the difference in votes between the winning party and the losing party,
 # and writes it to output
-
 def determine_winner_diff():
         for j in range(2, 10):
             for i in range(2, 3):
@@ -79,8 +75,7 @@ def determine_winner_diff():
                 # Calculate 'Difference in Vote' and Write to Output
                 finished_sheet.cell(row=j,column=6).value = int(finished_sheet.cell(row=j, column=i).value) - int(finished_sheet.cell(row=j, column=(i + 1)).value)
 
-
-
+#This function determines percentage of vote for given party,x
 def pctg(x):
     for i in range(2,10):
         if x == "DEM":
