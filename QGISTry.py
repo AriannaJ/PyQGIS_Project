@@ -1,33 +1,38 @@
 import sys
+import os
 
+from qgis.core import QgsApplication
 import qgis.core as qt
 
 # Initialize QGIS
-qt.QgsApplication.setPrefixPath(r'C:\OSGeo4W64\apps\qgis', True)
-qt.QgsApplication.initQgis()
+qt.QgsApplication.setPrefixPath("C:\\OSGeo4W64\\apps\\qgis", True)
+qgs = qt.QgsApplication([], False)
+qgs.initQgis()
 
-# Add the path to processing so we can import it next
-sys.path.append(r'C:\OSGeo4W64\apps\qgis\python\plugins')
-# Code rest of this for the use of "Processing Algorithms in QGIS"
+# Add the path to processing
+sys.path.append('C:\OSGeo4W64\apps\qgis\python\plugins')
 
-
-shape_file = input("Enter the path to desired shape file: ")
-csv_file = input("Enter the path to desired csv file: ")
+# Import processing
+import processing
 
 
 def create_map(shp_file, csv_f):
 
+	assert os.path.exists(shp_file), "I could not locate the shape file. Was the path typed correctly?"
+	s = open(shp_file, 'r+')
+	print("Shape File Located")
 	# Add Georgia Map to Canvas
 	ga_map = qt.QgsVectorLayer(shp_file, "GA Map", "ogr")
 	qt.QgsProject.instance().addMapLayer(ga_map)
-	csv_uri = csv_f + "?encoding=UTF-8&delimiter=,"
-	csv_layer = qt.QgsVectorLayer(csv_uri, "2018_SH119", "delimitedtext")
+	s.close()
 
-	# Add data from csv file to Map Canvas if csv is valid
-	if not csv_layer.isValid():
-		print("CSV Layer not valid")
-	else:
-		qt.QgsProject.instance().addMapLayer(csv_layer)
+	csv_uri = csv_f + "?encoding=UTF-8&delimiter=,"
+	assert os.path.exists(csv_uri), "I could not locate the csv file. Was the path typed correctly?"
+	c = open(csv_uri, 'r+')
+	print("Csv File Located")
+	csv_layer = qt.QgsVectorLayer(csv_uri, "2018_SH119", "delimitedtext")
+	qt.QgsProject.instance().addMapLayer(csv_layer)
+	c.close()
 
 	# Join the layers that are a part of the Map Canvas
 	join_field = 'County'
@@ -42,16 +47,24 @@ def create_map(shp_file, csv_f):
 
 	# Color Map
 	map_canvas = qt.QgsProject.instance().mapLayersByName("GA Map")[0]
-	map_canvas.renderer().symbol().setColor(qt.QColor("white"))
+	map_canvas.renderer().symbol().setColor(QColor("white"))
 	map_canvas.triggerRepaint()
 	print("Map Has Been Initialized")
 
 	return map_canvas
 
 
-# This is the initialized map
-ga_map = create_map(shape_file, csv_file)
+shape_file = input("Enter the path to desired shape file: ")
 
+csv_file = input("Enter the path to desired csv file: ")
+
+# This is the initialized map
+init_map = create_map(shape_file, csv_file)
+
+print(init_map)
+print("we're done here")
+
+QGSApplication.exitQgis()
 
 
 
